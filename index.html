@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traders Hub — AI-powered ops for systematic futures traders</title>
+<meta name="description" content="The strategy registry, Pine script generator, and trade journal that retail futures traders actually need. Built by a futures trader. Local-first, your data stays on your Mac.">
+<meta property="og:title" content="Traders Hub — strategy registry + AI Pine generator for futures traders">
+<meta property="og:description" content="Stop trading without a system. Track every locked engine, generate Pine scripts from plain English, journal trades by talking to Claude.">
+<meta property="og:type" content="website">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; }
+  .gradient-text {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  pre.code {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  details summary { cursor: pointer; list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  details[open] summary .chevron { transform: rotate(90deg); }
+  .chevron { transition: transform 0.15s ease; }
+</style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 antialiased">
+
+<!-- ─── Nav ─── -->
+<nav class="border-b border-zinc-800/60">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2 font-mono text-sm font-medium">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+      Traders Hub
+    </div>
+    <div class="flex items-center gap-6 text-sm text-zinc-400">
+      <a href="#what" class="hover:text-zinc-100">What it does</a>
+      <a href="#how" class="hover:text-zinc-100">How it works</a>
+      <a href="#honest" class="hover:text-zinc-100">What it won't do</a>
+      <a href="#waitlist" class="hover:text-zinc-100">Waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section class="max-w-4xl mx-auto px-6 pt-20 pb-16">
+  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs text-zinc-400 mb-8">
+    <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+    Mac beta — coming Q3 2026
+  </div>
+
+  <h1 class="text-5xl sm:text-6xl font-medium tracking-tight leading-[1.05] mb-6">
+    Trade futures<br>
+    <span class="gradient-text">with a system</span>, not vibes.
+  </h1>
+
+  <p class="text-xl text-zinc-400 leading-relaxed max-w-2xl mb-10">
+    A local dashboard for the retail futures trader who's tired of journaling in spreadsheets, eyeballing whether a strategy still has edge, and rewriting the same Pine boilerplate every time they backtest an idea.
+  </p>
+
+  <!-- Email capture — Tally form. The visible form pre-fills the email
+       and redirects to the Tally hosted page. Tally captures the
+       submission on its end. Set TALLY_FORM_ID in the script below. -->
+  <form
+    onsubmit="event.preventDefault(); openTally(this);"
+    class="flex flex-col sm:flex-row gap-3 max-w-xl"
+  >
+    <input
+      type="email"
+      name="email"
+      required
+      placeholder="you@trader.com"
+      class="flex-1 px-4 py-3 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition"
+    />
+    <button
+      type="submit"
+      class="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition whitespace-nowrap"
+    >
+      Get on the waitlist →
+    </button>
+  </form>
+  <p class="text-xs text-zinc-500 mt-3">
+    No spam. One email when the Mac beta is ready. Unsubscribe anytime.
+  </p>
+</section>
+
+<!-- ─── Problem ─── -->
+<section class="border-y border-zinc-800/60 bg-zinc-900/40 py-20">
+  <div class="max-w-4xl mx-auto px-6">
+    <p class="text-sm text-zinc-500 uppercase tracking-wider mb-4">The problem</p>
+    <h2 class="text-3xl sm:text-4xl font-medium leading-tight mb-8 max-w-3xl">
+      Most retail futures traders run 3-5 strategies, but track none of them properly.
+    </h2>
+    <div class="grid sm:grid-cols-2 gap-8 text-zinc-300 leading-relaxed">
+      <div>
+        <p class="text-zinc-500 mb-2">→ Your journal is a spreadsheet</p>
+        <p class="text-sm">…that you stop updating after week three. You can't reconstruct what you actually took versus what your plan said to take.</p>
+      </div>
+      <div>
+        <p class="text-zinc-500 mb-2">→ You don't know if a strategy still works</p>
+        <p class="text-sm">"It worked last quarter" isn't a promotion gate. You need profit factor, drawdown, Sortino, expectancy — all conditional on the current regime.</p>
+      </div>
+      <div>
+        <p class="text-zinc-500 mb-2">→ Every new strategy is a Pine rewrite</p>
+        <p class="text-sm">News blackout, breakeven, structure trail, session filter — you've typed the same 200 lines a dozen times.</p>
+      </div>
+      <div>
+        <p class="text-zinc-500 mb-2">→ Your halts are in your head</p>
+        <p class="text-sm">"I should probably pause YM ORB" — but did you? Did you write down why? In what regime do you turn it back on?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── What it does ─── -->
+<section id="what" class="max-w-4xl mx-auto px-6 py-20">
+  <p class="text-sm text-zinc-500 uppercase tracking-wider mb-4">What it does</p>
+  <h2 class="text-3xl sm:text-4xl font-medium leading-tight mb-12">
+    Three tools that replace the spreadsheet+memory loop.
+  </h2>
+
+  <div class="space-y-12">
+    <!-- Feature 1 -->
+    <div class="grid sm:grid-cols-[140px_1fr] gap-6 sm:gap-10 items-start">
+      <div class="text-emerald-400 font-mono text-sm font-medium pt-1">01 / Registry</div>
+      <div>
+        <h3 class="text-xl font-medium mb-3">A strategy registry that knows when to halt itself.</h3>
+        <p class="text-zinc-400 leading-relaxed mb-4">
+          Every strategy you trade lives in one file. Profit factor, win rate, Sortino, max drawdown, expectancy — all computed live from your CSV exports + your manual entries. Promotion-gate framework with universal floors (PF ≥ 1.0, max DD ≤ 20%) plus per-strategy overrides. When an engine falls below its gates, the dashboard flags it before you lose another $500 figuring it out.
+        </p>
+        <pre class="code text-zinc-500 bg-zinc-900/60 border border-zinc-800 rounded-lg p-4 overflow-x-auto"><span class="text-zinc-300">Str1_NQ_15m</span>      <span class="text-emerald-400">5/6 gates passing</span>   PF 2.04   +$17,855
+<span class="text-zinc-300">Str5_Continuation</span>  <span class="text-emerald-400">6/6 promotion eligible</span>  PF 6.48
+<span class="text-zinc-300">Str3_NQ_5m</span>       <span class="text-rose-400">HALTED — 4% WR, chop regime</span></pre>
+      </div>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="grid sm:grid-cols-[140px_1fr] gap-6 sm:gap-10 items-start">
+      <div class="text-emerald-400 font-mono text-sm font-medium pt-1">02 / Pine</div>
+      <div>
+        <h3 class="text-xl font-medium mb-3">Pine v6 scripts from plain English.</h3>
+        <p class="text-zinc-400 leading-relaxed mb-4">
+          Write your strategy idea in a short spec — entry rule, stop type, target, session window. Traders Hub generates a complete Pine v6 strategy script in your house style: news blackout, breakeven, structure trail, eval-governance comments. Drops straight into TradingView. No more rewriting the same 200 lines.
+        </p>
+        <pre class="code text-zinc-500 bg-zinc-900/60 border border-zinc-800 rounded-lg p-4 overflow-x-auto">$ traders-hub pine generate \
+    --entry "long when NQ closes above prev-day high after retest"  \
+    --stop structure --target 3R --breakeven 1R --session "NYO+midday"
+
+<span class="text-emerald-400">✓ Generated 327-line Pine v6 script in 18 seconds</span>
+<span class="text-emerald-400">✓ Saved to ~/tradingview-deploy/breakout_pullback_nq_15m.txt</span></pre>
+      </div>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="grid sm:grid-cols-[140px_1fr] gap-6 sm:gap-10 items-start">
+      <div class="text-emerald-400 font-mono text-sm font-medium pt-1">03 / Journal</div>
+      <div>
+        <h3 class="text-xl font-medium mb-3">Journal trades by talking, not typing.</h3>
+        <p class="text-zinc-400 leading-relaxed mb-4">
+          "Long MNQ 24550 stop 24500 exited 24620 NYO mid, per plan." Traders Hub turns that one sentence into a structured journal entry: strategy, symbol, side, R-multiple, P&L, regime context. Flags every assumption it made so you can review before it commits. Pipes into your strategy stats automatically — no double-entry.
+        </p>
+        <pre class="code text-zinc-500 bg-zinc-900/60 border border-zinc-800 rounded-lg p-4 overflow-x-auto"><span class="text-zinc-400">You:</span> long mnq 24550 stop 24500 out 24620 nyo mid per plan
+<span class="text-zinc-400">Hub:</span> Strategy: <span class="text-zinc-200">Str1_NQ_15m</span>   Side: <span class="text-zinc-200">LONG</span>   R: <span class="text-emerald-400">+1.4</span>   P&L: <span class="text-emerald-400">$140</span>
+       Flagged: <span class="text-amber-400">entry time defaulted to 09:30 ET</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── How it works ─── -->
+<section id="how" class="border-y border-zinc-800/60 bg-zinc-900/40 py-20">
+  <div class="max-w-4xl mx-auto px-6">
+    <p class="text-sm text-zinc-500 uppercase tracking-wider mb-4">How it works</p>
+    <h2 class="text-3xl sm:text-4xl font-medium leading-tight mb-12">
+      Local-first. Your trades stay on your Mac.
+    </h2>
+
+    <div class="grid sm:grid-cols-3 gap-6">
+      <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-6">
+        <div class="text-zinc-500 font-mono text-xs mb-3">Step 1</div>
+        <p class="font-medium mb-2">Download & install</p>
+        <p class="text-sm text-zinc-400">One double-click. Bundles its own Python runtime. Opens to the dashboard in under 90 seconds.</p>
+      </div>
+      <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-6">
+        <div class="text-zinc-500 font-mono text-xs mb-3">Step 2</div>
+        <p class="font-medium mb-2">Add your trades</p>
+        <p class="text-sm text-zinc-400">Drag in your TradingView CSV exports, or type today's trades in plain English. The dashboard builds your registry automatically.</p>
+      </div>
+      <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-6">
+        <div class="text-zinc-500 font-mono text-xs mb-3">Step 3</div>
+        <p class="font-medium mb-2">Use it every morning</p>
+        <p class="text-sm text-zinc-400">Today's sizing per strategy, what's halted and why, week-over-week P&L by regime. Coffee + one tab.</p>
+      </div>
+    </div>
+
+    <div class="mt-12 bg-zinc-950 border border-zinc-800 rounded-lg p-6 flex items-start gap-4">
+      <div class="text-emerald-400 mt-0.5">🔒</div>
+      <div>
+        <p class="font-medium mb-1">Your data never leaves your computer.</p>
+        <p class="text-sm text-zinc-400">SQLite on your local disk. The only thing that goes out is the Pine generator prompt (to Anthropic). No cloud sync, no telemetry, no account required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Who it's for ─── -->
+<section class="max-w-4xl mx-auto px-6 py-20">
+  <p class="text-sm text-zinc-500 uppercase tracking-wider mb-4">Built for</p>
+  <h2 class="text-3xl sm:text-4xl font-medium leading-tight mb-12">
+    Retail futures traders who run 2+ strategies on NQ, YM, or GC.
+  </h2>
+
+  <div class="grid sm:grid-cols-2 gap-6 text-zinc-300">
+    <div class="bg-zinc-900/60 border border-zinc-800 rounded-lg p-6">
+      <p class="font-medium mb-3 text-emerald-400">If this is you</p>
+      <ul class="space-y-2 text-sm text-zinc-400">
+        <li>→ You trade NQ, YM, ES, or GC futures (or their micros)</li>
+        <li>→ You're funded on Apex, Topstep, FTMO, or trading your own capital</li>
+        <li>→ You have 2-5 strategies but track them inconsistently</li>
+        <li>→ You write Pine scripts and want to ship more, faster</li>
+        <li>→ You're comfortable with "promotion gate" and "Sortino"</li>
+      </ul>
+    </div>
+    <div class="bg-zinc-900/60 border border-zinc-800 rounded-lg p-6">
+      <p class="font-medium mb-3 text-zinc-500">Probably not you</p>
+      <ul class="space-y-2 text-sm text-zinc-500">
+        <li>→ You only trade equities/options (the framework is futures-shaped)</li>
+        <li>→ You're a discretionary trader without rule-based strategies</li>
+        <li>→ You want signals or trade calls (this isn't that)</li>
+        <li>→ You want it to place orders for you (broker integration coming, not v1)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Honest section ─── -->
+<section id="honest" class="border-y border-zinc-800/60 bg-zinc-900/40 py-20">
+  <div class="max-w-4xl mx-auto px-6">
+    <p class="text-sm text-zinc-500 uppercase tracking-wider mb-4">Honest about what it won't do</p>
+    <h2 class="text-3xl sm:text-4xl font-medium leading-tight mb-8">
+      No magic. No signals. No promises about your P&L.
+    </h2>
+    <div class="space-y-6 text-zinc-300 leading-relaxed">
+      <p>
+        <span class="font-medium text-zinc-100">It won't tell you what to trade.</span> Traders Hub tracks the strategies <em>you</em> already run and helps you halt them when they stop working. It doesn't give signals or "AI predictions" — those don't work and you know it.
+      </p>
+      <p>
+        <span class="font-medium text-zinc-100">It won't make a bad strategy good.</span> If your edge is fake, the promotion gates will tell you. That's the point. Some users will be annoyed when their pet strategy gets flagged as "needs improvement" after 30 trades.
+      </p>
+      <p>
+        <span class="font-medium text-zinc-100">It won't replace your broker.</span> v1 reads your fills, it doesn't place orders. Broker integration (Tradovate, TradeStation) is on the roadmap but isn't in the first release.
+      </p>
+      <p>
+        <span class="font-medium text-zinc-100">The AI features cost real money.</span> The Pine generator and NL journal parser call Claude's API. You bring your own Anthropic API key (about $0.05 per Pine generation, $0.005 per journal entry). Most users spend under $5/month.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section class="max-w-4xl mx-auto px-6 py-20">
+  <p class="text-sm text-zinc-500 uppercase tracking-wider mb-4">Questions</p>
+  <h2 class="text-3xl sm:text-4xl font-medium leading-tight mb-12">FAQ</h2>
+
+  <div class="space-y-4">
+    <details class="bg-zinc-900/60 border border-zinc-800 rounded-lg group">
+      <summary class="px-6 py-4 font-medium flex items-center justify-between hover:bg-zinc-900 rounded-lg">
+        <span>How much does it cost?</span>
+        <span class="chevron text-zinc-500">→</span>
+      </summary>
+      <div class="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
+        Free during the Mac beta. Likely $19-29/month after launch with a free tier that covers the registry + journal. The Pine generator might be a paid add-on or might require you to bring your own Anthropic API key — still figuring it out. Beta users get a permanent founder rate.
+      </div>
+    </details>
+
+    <details class="bg-zinc-900/60 border border-zinc-800 rounded-lg">
+      <summary class="px-6 py-4 font-medium flex items-center justify-between hover:bg-zinc-900 rounded-lg">
+        <span>Windows version?</span>
+        <span class="chevron text-zinc-500">→</span>
+      </summary>
+      <div class="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
+        Mac first because it's faster to ship and most futures-trader friends I know run Mac. Windows is on the list, probably 4-6 weeks after Mac launch. Sign up for the waitlist and indicate Windows in your reply.
+      </div>
+    </details>
+
+    <details class="bg-zinc-900/60 border border-zinc-800 rounded-lg">
+      <summary class="px-6 py-4 font-medium flex items-center justify-between hover:bg-zinc-900 rounded-lg">
+        <span>Does it sync to my broker?</span>
+        <span class="chevron text-zinc-500">→</span>
+      </summary>
+      <div class="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
+        Not in v1. You export trades from TradingView (or Tradovate's CSV export) and drop them in. Broker integration via API is on the roadmap — Tradovate first since it has the cleanest API for retail traders. ETA: not in v1, probably 2-3 months after.
+      </div>
+    </details>
+
+    <details class="bg-zinc-900/60 border border-zinc-800 rounded-lg">
+      <summary class="px-6 py-4 font-medium flex items-center justify-between hover:bg-zinc-900 rounded-lg">
+        <span>Who's building this?</span>
+        <span class="chevron text-zinc-500">→</span>
+      </summary>
+      <div class="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
+        One person. A retail futures trader who got tired of the spreadsheet+memory loop and built this for themselves over six months. The Mac beta is what I've been using personally every day — beta users get the exact same tool I run.
+      </div>
+    </details>
+
+    <details class="bg-zinc-900/60 border border-zinc-800 rounded-lg">
+      <summary class="px-6 py-4 font-medium flex items-center justify-between hover:bg-zinc-900 rounded-lg">
+        <span>What's the privacy story?</span>
+        <span class="chevron text-zinc-500">→</span>
+      </summary>
+      <div class="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
+        Your trade data is stored in a SQLite file on your Mac. It never leaves your computer. No telemetry, no analytics, no account required. The Pine generator does send strategy prompts to Anthropic (using your API key) — but your trade history is never part of that prompt.
+      </div>
+    </details>
+
+    <details class="bg-zinc-900/60 border border-zinc-800 rounded-lg">
+      <summary class="px-6 py-4 font-medium flex items-center justify-between hover:bg-zinc-900 rounded-lg">
+        <span>Can I use it for prop-firm evaluations?</span>
+        <span class="chevron text-zinc-500">→</span>
+      </summary>
+      <div class="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
+        Yes — this is one of the main use cases. The registry tracks per-instrument drawdown (Apex's daily-loss-limit rule), the journal flags trades that violated your plan (often what blows evals), and the regime classifier helps you size up/down based on volatility conditions. Eval-specific governance is a planned feature for v1.1.
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ─── Final CTA ─── -->
+<section id="waitlist" class="border-t border-zinc-800/60 py-20">
+  <div class="max-w-2xl mx-auto px-6 text-center">
+    <h2 class="text-3xl sm:text-4xl font-medium leading-tight mb-4">
+      Get on the Mac beta waitlist.
+    </h2>
+    <p class="text-zinc-400 mb-8">
+      One email when it's ready. Founder pricing for beta users. No spam.
+    </p>
+    <form
+      onsubmit="event.preventDefault(); openTally(this);"
+      class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto"
+    >
+      <input
+        type="email"
+        name="email"
+        required
+        placeholder="you@trader.com"
+        class="flex-1 px-4 py-3 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition"
+      />
+      <button
+        type="submit"
+        class="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition whitespace-nowrap"
+      >
+        Join waitlist →
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer class="border-t border-zinc-800/60 py-10">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-500">
+    <div class="font-mono">© 2026 Traders Hub</div>
+    <div class="flex items-center gap-6">
+      <a href="mailto:hello@tradershub.app" class="hover:text-zinc-300">Contact</a>
+      <a href="#" class="hover:text-zinc-300">Privacy</a>
+      <a href="#" class="hover:text-zinc-300">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Tally form handoff ────────────────────────────────────────────
+  // Replace TALLY_FORM_ID with your form's ID (e.g. "wb1A8q" — find it
+  // in your Tally form's URL: tally.so/r/wb1A8q).
+  //
+  // Replace EMAIL_FIELD_LABEL with the EXACT label of your Tally
+  // form's email field. URL-encoded labels are case-sensitive.
+  // Examples: "Email", "email", "Your%20email".
+  const TALLY_FORM_ID = "EkZXvl";
+  const EMAIL_FIELD_LABEL = "Email";
+
+  function openTally(formEl) {
+    const email = formEl.querySelector('input[type="email"]').value.trim();
+    if (!email) return;
+    const url = `https://tally.so/r/${TALLY_FORM_ID}?${EMAIL_FIELD_LABEL}=${encodeURIComponent(email)}`;
+    window.location.href = url;
+  }
+</script>
+
+</body>
+</html>
