@@ -74,29 +74,17 @@
     A local dashboard for the retail futures trader who's tired of journaling in spreadsheets, eyeballing whether a strategy still has edge, and rewriting the same Pine boilerplate every time they backtest an idea.
   </p>
 
-  <!-- Email capture — Tally form. The visible form pre-fills the email
-       and redirects to the Tally hosted page. Tally captures the
-       submission on its end. Set TALLY_FORM_ID in the script below. -->
-  <form
-    onsubmit="event.preventDefault(); openTally(this);"
-    class="flex flex-col sm:flex-row gap-3 max-w-xl"
+  <!-- Direct handoff to Tally. Tally collects email + qualifying
+       questions (instruments traded, funded program) on its hosted page,
+       so we don't duplicate the email input here. One click → one form. -->
+  <a
+    href="https://tally.so/r/EkZXvl"
+    class="inline-block px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition"
   >
-    <input
-      type="email"
-      name="email"
-      required
-      placeholder="you@trader.com"
-      class="flex-1 px-4 py-3 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition"
-    />
-    <button
-      type="submit"
-      class="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition whitespace-nowrap"
-    >
-      Get on the waitlist →
-    </button>
-  </form>
-  <p class="text-xs text-zinc-500 mt-3">
-    Currently in private alpha. First invites going out in waves to early signups. No purchase required, no pressure. Unsubscribe anytime.
+    Get on the waitlist →
+  </a>
+  <p class="text-xs text-zinc-500 mt-3 max-w-xl">
+    Currently in private alpha. First invites going out in waves to early signups. No purchase required, no pressure. We'll ask 2 quick questions on the next page so we can prioritize futures-trader signups.
   </p>
 </section>
 
@@ -351,26 +339,14 @@
       Currently in private alpha. First invites going out in waves to early signups.
     </p>
     <p class="text-zinc-500 text-sm mb-8">
-      No purchase, no pressure. We'll ask one quick question after you sign up so we can prioritize futures-trader signups.
+      No purchase, no pressure. We'll ask 2 quick questions on the next page (what you trade + funded program) so we can prioritize futures-trader signups.
     </p>
-    <form
-      onsubmit="event.preventDefault(); openTally(this);"
-      class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto"
+    <a
+      href="https://tally.so/r/EkZXvl"
+      class="inline-block px-8 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition"
     >
-      <input
-        type="email"
-        name="email"
-        required
-        placeholder="you@trader.com"
-        class="flex-1 px-4 py-3 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition"
-      />
-      <button
-        type="submit"
-        class="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition whitespace-nowrap"
-      >
-        Join waitlist →
-      </button>
-    </form>
+      Join waitlist →
+    </a>
   </div>
 </section>
 
@@ -386,24 +362,8 @@
   </div>
 </footer>
 
-<script>
-  // ── Tally form handoff ────────────────────────────────────────────
-  // Replace TALLY_FORM_ID with your form's ID (e.g. "wb1A8q" — find it
-  // in your Tally form's URL: tally.so/r/wb1A8q).
-  //
-  // Replace EMAIL_FIELD_LABEL with the EXACT label of your Tally
-  // form's email field. URL-encoded labels are case-sensitive.
-  // Examples: "Email", "email", "Your%20email".
-  const TALLY_FORM_ID = "EkZXvl";
-  const EMAIL_FIELD_LABEL = "Email";
-
-  function openTally(formEl) {
-    const email = formEl.querySelector('input[type="email"]').value.trim();
-    if (!email) return;
-    const url = `https://tally.so/r/${TALLY_FORM_ID}?${EMAIL_FIELD_LABEL}=${encodeURIComponent(email)}`;
-    window.location.href = url;
-  }
-</script>
+<!-- No client-side JS needed — both "Join waitlist" buttons are plain
+     anchors that link to the Tally hosted form at tally.so/r/EkZXvl. -->
 
 </body>
 </html>
