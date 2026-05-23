@@ -171,6 +171,27 @@
        Flagged: <span class="text-amber-400">entry time defaulted to 09:30 ET</span></pre>
       </div>
     </div>
+
+    <!-- Feature 4 -->
+    <div class="grid sm:grid-cols-[140px_1fr] gap-6 sm:gap-10 items-start">
+      <div class="text-emerald-400 font-mono text-sm font-medium pt-1">04 / Reports</div>
+      <div>
+        <h3 class="text-xl font-medium mb-3">Living reports that rewrite themselves.</h3>
+        <p class="text-zinc-400 leading-relaxed mb-4">
+          Every strategy gets a markdown report that auto-regenerates whenever a new experiment or trade lands. Current leader, recent activity, sweep takeaways, regime breakdown, full timeline — always current, no week-three stale review docs. Your hand-written notes (hypotheses, "don't retest variant X", links to TV screenshots) live in a sidecar file that the generator <em>never</em> touches. So the auto half can be aggressive without ever clobbering your observations.
+        </p>
+        <pre class="code text-zinc-500 bg-zinc-900/60 border border-zinc-800 rounded-lg p-4 overflow-x-auto"><span class="text-zinc-300"># Str4_ORB — Strategy Report</span>
+<span class="text-zinc-500">Living document — auto-generated from 24 experiments. Last regen 2m ago.</span>
+
+<span class="text-zinc-300">## Current leader</span>
+NQ_ORB_5d06d194 — Uploaded bars · sweep on NQ.
+n=10  Sum R <span class="text-emerald-400">+1.98</span>  PF <span class="text-emerald-400">1.33</span>  Sortino <span class="text-emerald-400">+0.60</span>  Max DD R <span class="text-rose-400">-4.00</span>
+
+<span class="text-zinc-300">## Your notes</span> <span class="text-zinc-500">(survive every regen)</span>
+- HYPOTHESIS: 9:15 window catches fewer false sweeps
+- Don't retest the 25m variant, already rejected</pre>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -214,14 +235,14 @@
 <section class="max-w-4xl mx-auto px-6 py-20">
   <p class="text-sm text-zinc-500 uppercase tracking-wider mb-4">Built for</p>
   <h2 class="text-3xl sm:text-4xl font-medium leading-tight mb-12">
-    Retail futures traders who run 2+ strategies on NQ, YM, or GC.
+    Retail futures traders who run 2+ strategies on liquid contracts.
   </h2>
 
   <div class="grid sm:grid-cols-2 gap-6 text-zinc-300">
     <div class="bg-zinc-900/60 border border-zinc-800 rounded-lg p-6">
       <p class="font-medium mb-3 text-emerald-400">If this is you</p>
       <ul class="space-y-2 text-sm text-zinc-400">
-        <li>→ You trade NQ, YM, ES, or GC futures (or their micros)</li>
+        <li>→ You trade liquid futures — NQ, ES, YM, RTY, GC, SI, CL, NG and their micros are supported out of the box; anything with a liquid ETF proxy is a one-line config change</li>
         <li>→ You're funded on Apex, Topstep, FTMO, or trading your own capital</li>
         <li>→ You have 2-5 strategies but track them inconsistently</li>
         <li>→ You trade off Pine-script strategies — whether you write them or wish you didn't have to</li>
@@ -287,6 +308,16 @@
       </summary>
       <div class="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
         Mac first because it's faster to ship and most futures-trader friends I know run Mac. Windows is on the list, probably 4-6 weeks after Mac launch. Sign up for the waitlist and indicate Windows in your reply.
+      </div>
+    </details>
+
+    <details class="bg-zinc-900/60 border border-zinc-800 rounded-lg">
+      <summary class="px-6 py-4 font-medium flex items-center justify-between hover:bg-zinc-900 rounded-lg">
+        <span>What instruments does it support?</span>
+        <span class="chevron text-zinc-500">→</span>
+      </summary>
+      <div class="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
+        Sixteen out of the box: equity indices (NQ, ES, YM, RTY plus all their micros), metals (GC, SI plus micros), energy (CL, NG, MCL, QG). Trend signals and regime classification work without you uploading anything — they come from yfinance ETF proxies (QQQ for NQ, SPY for ES, GLD for GC, USO for CL, etc.), so a brand-new instrument starts producing chips the moment you select it. Adding a contract outside the default 16 is a one-line config change.
       </div>
     </details>
 
